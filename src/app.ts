@@ -1,28 +1,31 @@
-import express, { Express } from "express"
-import mongoose from "mongoose"
-import cors from "cors"
-import newsRouter from "./routes/news.routes"
+import express, { Express } from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import newsRouter from "./routes/news.routes";
+import { config } from "dotenv";
 
-require('dotenv').config()
+config();
 
-const app: Express = express()
+const app: Express = express();
 
-const PORT: string | number = process.env.PORT || 4000
+const PORT: string | number = process.env.PORT || 4000;
 
-app.use(cors())
-app.use('/news', newsRouter)
+app.use(cors());
+app.use("/news", newsRouter);
 
-const uri: string = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@clustertodo.raz9g.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
-const options = { useNewUrlParser: true, useUnifiedTopology: true }
-mongoose.set("useFindAndModify", false)
+const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.9xi6kms.mongodb.net/?retryWrites=true&w=majority`;
+const options: any = { useNewUrlParser: true, useUnifiedTopology: true };
+console.log(uri)
+const mongooseConnect = async (): Promise<void> => {
+  await mongoose.connect(uri, options);
+};
 
-mongoose
-  .connect(uri, options)
-  .then(() =>
-    app.listen(PORT, () =>
-      console.log(`Server running on http://localhost:${PORT}`)
-    )
-  )
-  .catch(error => {
-    throw error
+mongooseConnect()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
   })
+  .catch((error) => {
+    throw error;
+  });

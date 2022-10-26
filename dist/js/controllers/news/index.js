@@ -8,16 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getNews = void 0;
-const todo_1 = __importDefault(require("../../models/todo"));
+// import { ITodo } from "./../../types/todo"
+// import Todo from "../../models/todo"
 const getNews = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const todos = yield todo_1.default.find();
-        res.status(200).json({ todos });
+        // const todos: ITodo[] = await Todo.find()
+        res.status(200).json({ live: true });
     }
     catch (error) {
         throw error;
