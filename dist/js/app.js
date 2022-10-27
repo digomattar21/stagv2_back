@@ -23,9 +23,7 @@ const PORT = process.env.PORT || 4000;
 app.use((0, cors_1.default)());
 app.use("/news", news_routes_1.default);
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.9xi6kms.mongodb.net/?retryWrites=true&w=majority`;
-// const uri = "mongodb+srv://<username>:<password>@cluster0.9xi6kms.mongodb.net/?retryWrites=true&w=majority";
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
-console.log(uri);
 const mongooseConnect = () => __awaiter(void 0, void 0, void 0, function* () {
     yield mongoose_1.default.connect(uri, options);
 });
@@ -36,6 +34,5 @@ mongooseConnect()
     });
 })
     .catch((error) => {
-    console.log(error);
     throw error;
 });

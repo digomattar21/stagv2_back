@@ -15,7 +15,7 @@ app.use("/news", newsRouter);
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.9xi6kms.mongodb.net/?retryWrites=true&w=majority`;
 const options: any = { useNewUrlParser: true, useUnifiedTopology: true };
-console.log(uri)
+
 const mongooseConnect = async (): Promise<void> => {
   await mongoose.connect(uri, options);
 };
