@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "main": "dist/js/app.js",
   "license": "MIT",
+  "authors": "Rodrigo Mattar",
   "scripts": {
     "dev:lint": "npx eslint --fix",
     "dev:prettier": "prettier --config ./prettier.config.js --write .",
     "dev:build": "tsc -w",
     "dev:run": "nodemon dist/js/app.js",
     "dev": "concurrently yarn:dev:*",
-    "start:build": "tsc -w",
-    "start:run": "node dist/js/app.js",
-    "start": "concurrently yarn:start:*",
-    "lint": "eslint . --ext .ts"
+    "start": "tsc -w &&  node dist/js/app.js"
   },
   "dependencies": {
     "axios": "^1.1.3",
