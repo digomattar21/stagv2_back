@@ -11,15 +11,16 @@ const app: Express = express();
 const PORT: string | number = process.env.PORT || 4000;
 
 app.use(cors());
+app.use(express.json());
 app.use("/news", newsRouter);
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.9xi6kms.mongodb.net/?retryWrites=true&w=majority`;
 const options: any = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const mongooseConnect = async (): Promise<void> => {
-  await mongoose.connect(uri, options);
+  // await mongoose.connect(uri, options);
+  return;
 };
-
 mongooseConnect()
   .then(() => {
     app.listen(PORT, () => {

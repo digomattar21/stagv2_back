@@ -6,19 +6,20 @@ import { mountNewsQuery } from "../../util/news/newsQueryMounter";
 
 export const getNews = async (req: Request, res: Response): Promise<void> => {
   try {
-    const yesterday: string = new Date().toISOString().split("T")[0];
-    const today = new Date().toISOString().split("T")[0];
+    const yesterday: string =
+      (req.query?.from as string) || new Date().toISOString().split("T")[0];
+    const today: string =
+      (req.query?.to as string) || new Date().toISOString().split("T")[0];
 
     const uri: string = mountNewsQuery({
       type: "everything",
       language: "pt",
-      q: "technology",
+      q: "tecnologia",
       from: yesterday,
       to: today,
     });
-    console.log(uri);
     const response: AxiosResponse<any> = await axios.get(uri);
-    console.log(response.data);
+
     res.status(200).json({ news: response.data.articles });
   } catch (error) {
     throw error;
