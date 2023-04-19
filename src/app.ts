@@ -14,12 +14,11 @@ app.use(cors());
 app.use(express.json());
 app.use("/news", newsRouter);
 
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.9xi6kms.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}.jsehy3t.mongodb.net/?retryWrites=true&w=majority`;
 const options: any = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const mongooseConnect = async (): Promise<void> => {
-  // await mongoose.connect(uri, options);
-  return;
+  return await mongoose.connect(uri, options);
 };
 mongooseConnect()
   .then(() => {
