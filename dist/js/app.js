@@ -15,14 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
-const news_routes_1 = __importDefault(require("./routes/news.routes"));
+const news_routes_1 = __importDefault(require("./routes/public/news/news.routes"));
 const dotenv_1 = require("dotenv");
+const auth_routes_1 = __importDefault(require("./routes/auth/auth.routes"));
+const privateNews_routes_1 = __importDefault(require("./routes/private/news/privateNews.routes"));
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 4000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use("/news", news_routes_1.default);
+app.use("/auth", auth_routes_1.default);
+app.use("/userNews", privateNews_routes_1.default);
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}.jsehy3t.mongodb.net/?retryWrites=true&w=majority`;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 const mongooseConnect = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -31,6 +35,7 @@ const mongooseConnect = () => __awaiter(void 0, void 0, void 0, function* () {
 mongooseConnect()
     .then(() => {
     app.listen(PORT, () => {
+        console.log(`Connected to Mongo Instance at: ${mongoose_1.default.connection.host}`);
         console.log(`Server running on http://localhost:${PORT}`);
     });
 })
