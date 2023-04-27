@@ -5,6 +5,7 @@ import newsRouter from "./routes/public/news/news.routes";
 import { config } from "dotenv";
 import authRouter from "./routes/auth/auth.routes";
 import privateNewsRouter from "./routes/private/news/privateNews.routes";
+import articlesRouter from "./routes/public/articles/articles.routes";
 
 config();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/news", newsRouter);
 app.use("/auth", authRouter);
 app.use("/userNews", privateNewsRouter);
+app.use("/articles", articlesRouter);
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}.jsehy3t.mongodb.net/?retryWrites=true&w=majority`;
 const options: any = { useNewUrlParser: true, useUnifiedTopology: true };
