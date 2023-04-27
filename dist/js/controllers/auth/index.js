@@ -29,21 +29,22 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const password = req.body.password;
         const user = yield User_1.default.findOne({ email });
         if (!user) {
-            errors.email = "User not found";
+            errors.message = "User not found";
             throw errors;
         }
         const matched = yield bcryptjs_1.default.compare(password, user.password);
         if (!matched) {
-            errors.password = "Incorrect Password";
-            res.status(400).json(errors);
+            errors.message = "Incorrect Password";
+            throw errors;
         }
         const payload = {
             id: user.id,
+            email: user.email,
             name: user.name,
             avatar: user.avatar,
         };
         const token = yield jsonwebtoken_1.default.sign(payload, `${process.env.JWT_SECRET}`);
-        res.status(200).json({ success: true, token: `Bearer ${token}` });
+        res.status(200).json({ success: true, token });
     }
     catch (error) {
         res.status(400).json(error);
@@ -58,7 +59,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const user = yield User_1.default.findOne({ email: req.body.email });
         if (user) {
-            errors.email = "Email already exists";
+            errors.message = "Email already exists";
             throw errors;
         }
         const avatar = gravatar_1.default.url(req.body.email, {
@@ -76,7 +77,14 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const hash = yield bcryptjs_1.default.hash(newUser.password, salt);
         newUser.password = hash;
         const savedUser = yield newUser.save();
-        res.status(200).json(savedUser);
+        const payload = {
+            id: savedUser.id,
+            email: savedUser.email,
+            name: savedUser.name,
+            avatar: savedUser.avatar,
+        };
+        const token = yield jsonwebtoken_1.default.sign(payload, `${process.env.JWT_SECRET}`);
+        res.status(200).json(Object.assign(Object.assign({}, savedUser), { token }));
     }
     catch (error) {
         res.status(400).json(error);

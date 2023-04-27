@@ -34,7 +34,10 @@ export const requireAuth = async (
   }
 
   try {
-    const payload: any = await verifyJWTToken(token, "your-secret-key-here");
+    const payload: any = await verifyJWTToken(
+      token,
+      process.env.JWT_SECRET as string
+    );
     // Add the use: r ID to the request object for use in subsequent middleware or route handlers
     req.userId = payload.userId;
     next();

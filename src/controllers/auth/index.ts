@@ -19,25 +19,26 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     const user: any = await User.findOne({ email });
     if (!user) {
-      errors.email = "User not found";
+      errors.message = "User not found";
       throw errors;
     }
 
     const matched: boolean = await bcrypt.compare(password, user.password);
     if (!matched) {
-      errors.password = "Incorrect Password";
+      errors.message = "Incorrect Password";
       throw errors;
     }
 
     const payload: any = {
       id: user.id,
+      email: user.email,
       name: user.name,
       avatar: user.avatar,
     };
 
     const token: string = await jwt.sign(payload, `${process.env.JWT_SECRET}`);
 
-    res.status(200).json({ success: true, token: `Bearer ${token}` });
+    res.status(200).json({ success: true, token });
   } catch (error: any) {
     res.status(400).json(error);
   }
@@ -53,7 +54,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 
     const user: any = await User.findOne({ email: req.body.email });
     if (user) {
-      errors.email = "Email already exists";
+      errors.message = "Email already exists";
       throw errors;
     }
 
@@ -62,7 +63,6 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       r: "pg",
       d: "mm",
     });
-
     const newUser: any = new User({
       name: req.body.name,
       email: req.body.email,
@@ -78,7 +78,16 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 
     const savedUser: any = await newUser.save();
 
-    res.status(200).json(savedUser);
+    const payload: any = {
+      id: savedUser.id,
+      email: savedUser.email,
+      name: savedUser.name,
+      avatar: savedUser.avatar,
+    };
+
+    const token: string = await jwt.sign(payload, `${process.env.JWT_SECRET}`);
+
+    res.status(200).json({ ...savedUser, token });
   } catch (error: any) {
     res.status(400).json(error);
   }

@@ -6,6 +6,7 @@ interface ErrorType {
   email?: string;
   password?: string;
   passwordConfirm?: string;
+  message?: string;
 }
 
 export const validateRegisterInput = (data: any) => {
@@ -19,49 +20,48 @@ export const validateRegisterInput = (data: any) => {
       : "";
 
     if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
-      errors.name = "Name must be between 2 to 30 chars";
+      errors.message = "Name must be between 2 to 30 chars";
     }
 
     if (Validator.isEmpty(data.name)) {
-      errors.name = "Name field is required";
+      errors.message = "Name field is required";
     }
 
     if (!Validator.isEmail(data.email)) {
-      errors.email = "Email is invalid";
+      errors.message = "Email is invalid";
     }
 
     if (Validator.isEmpty(data.email)) {
-      errors.email = "Email is required";
+      errors.message = "Email is required";
     }
 
     if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
-      errors.password = "Password must have 6 chars";
+      errors.message = "Password must have 6 chars";
     }
 
     if (Validator.isEmpty(data.password)) {
-      errors.password = "Password is required";
+      errors.message = "Password is required";
     }
 
-    if (!Validator.isLength(data.passwordConfirm, { min: 6, max: 30 })) {
-      errors.passwordConfirm = "Password must have 6 chars";
+    if (!Validator.isLength(data.password_confirm, { min: 6, max: 30 })) {
+      errors.message = "Password must have 6 chars";
     }
 
-    if (!Validator.equals(data.password, data.passwordConfirm)) {
-      errors.passwordConfirm = "Password and Confirm Password must match";
+    if (!Validator.equals(data.password, data.password_confirm)) {
+      errors.message = "Password and Confirm Password must match";
     }
 
-    if (Validator.isEmpty(data.passwordConfirm)) {
-      errors.passwordConfirm = "Password is required";
+    if (Validator.isEmpty(data.password_confirm)) {
+      errors.message = "Password Confirm is required";
     }
-  } catch (error) {
     return {
-      error,
-      isValid: false,
+      errors,
+      isValid: isEmpty(errors),
+    };
+  } catch (err) {
+    return {
+      errors,
+      isValid: isEmpty(errors),
     };
   }
-
-  return {
-    errors,
-    isValid: isEmpty(errors),
-  };
 };

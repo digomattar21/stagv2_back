@@ -16,42 +16,42 @@ const validateRegisterInput = (data) => {
             ? data.password_confirm
             : "";
         if (!validator_1.default.isLength(data.name, { min: 2, max: 30 })) {
-            errors.name = "Name must be between 2 to 30 chars";
+            errors.message = "Name must be between 2 to 30 chars";
         }
         if (validator_1.default.isEmpty(data.name)) {
-            errors.name = "Name field is required";
+            errors.message = "Name field is required";
         }
         if (!validator_1.default.isEmail(data.email)) {
-            errors.email = "Email is invalid";
+            errors.message = "Email is invalid";
         }
         if (validator_1.default.isEmpty(data.email)) {
-            errors.email = "Email is required";
+            errors.message = "Email is required";
         }
         if (!validator_1.default.isLength(data.password, { min: 6, max: 30 })) {
-            errors.password = "Password must have 6 chars";
+            errors.message = "Password must have 6 chars";
         }
         if (validator_1.default.isEmpty(data.password)) {
-            errors.password = "Password is required";
+            errors.message = "Password is required";
         }
-        if (!validator_1.default.isLength(data.passwordConfirm, { min: 6, max: 30 })) {
-            errors.passwordConfirm = "Password must have 6 chars";
+        if (!validator_1.default.isLength(data.password_confirm, { min: 6, max: 30 })) {
+            errors.message = "Password must have 6 chars";
         }
-        if (!validator_1.default.equals(data.password, data.passwordConfirm)) {
-            errors.passwordConfirm = "Password and Confirm Password must match";
+        if (!validator_1.default.equals(data.password, data.password_confirm)) {
+            errors.message = "Password and Confirm Password must match";
         }
-        if (validator_1.default.isEmpty(data.passwordConfirm)) {
-            errors.passwordConfirm = "Password is required";
+        if (validator_1.default.isEmpty(data.password_confirm)) {
+            errors.message = "Password Confirm is required";
         }
-    }
-    catch (error) {
         return {
-            error,
-            isValid: false,
+            errors,
+            isValid: (0, is_empty_1.isEmpty)(errors),
         };
     }
-    return {
-        errors,
-        isValid: (0, is_empty_1.isEmpty)(errors),
-    };
+    catch (err) {
+        return {
+            errors,
+            isValid: (0, is_empty_1.isEmpty)(errors),
+        };
+    }
 };
 exports.validateRegisterInput = validateRegisterInput;

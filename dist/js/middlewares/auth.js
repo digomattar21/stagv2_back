@@ -34,7 +34,7 @@ const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             .json({ message: "Invalid authorization header format" });
     }
     try {
-        const payload = yield verifyJWTToken(token, "your-secret-key-here");
+        const payload = yield verifyJWTToken(token, process.env.JWT_SECRET);
         // Add the use: r ID to the request object for use in subsequent middleware or route handlers
         req.userId = payload.userId;
         next();

@@ -1,9 +1,10 @@
-const Validator = require("validator");
-const isEmpty = require("./is-empty");
+import Validator from "validator";
+import { isEmpty } from "./is-empty";
 
 interface ErrorType {
   email?: string;
   password?: string;
+  message?: string;
 }
 
 export const validateLoginInput = (data: any) => {
@@ -13,19 +14,19 @@ export const validateLoginInput = (data: any) => {
     data.password = !isEmpty(data.password) ? data.password : "";
 
     if (!Validator.isEmail(data.email)) {
-      errors.email = "Email is invalid";
+      errors.message = "Email is invalid";
     }
 
     if (Validator.isEmpty(data.email)) {
-      errors.email = "Email is required";
+      errors.message = "Email is required";
     }
 
     if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
-      errors.password = "Password must have 6 chars";
+      errors.message = "Password must have 6 chars";
     }
 
     if (Validator.isEmpty(data.password)) {
-      errors.password = "Password is required";
+      errors.message = "Password is required";
     }
 
     return {
