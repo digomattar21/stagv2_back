@@ -7,6 +7,10 @@ const ArticleSchema = new Schema({
     type: String,
     required: true,
   },
+  mainImageUrl: {
+    type: String,
+    required: false,
+  },
   headline: {
     type: String,
     required: false,
@@ -16,6 +20,10 @@ const ArticleSchema = new Schema({
     required: true,
   },
   description: {
+    type: String,
+    required: true,
+  },
+  content: {
     type: String,
     required: true,
   },
