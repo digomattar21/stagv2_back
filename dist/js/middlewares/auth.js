@@ -36,7 +36,7 @@ const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         const payload = yield verifyJWTToken(token, process.env.JWT_SECRET);
         // Add the use: r ID to the request object for use in subsequent middleware or route handlers
-        req.userId = payload.userId;
+        req.userId = payload.id;
         next();
     }
     catch (err) {

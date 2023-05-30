@@ -42,6 +42,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             email: user.email,
             name: user.name,
             avatar: user.avatar,
+            admin: user.role === "admin",
         };
         const token = yield jsonwebtoken_1.default.sign(payload, `${process.env.JWT_SECRET}`);
         res.status(200).json({ success: true, token });

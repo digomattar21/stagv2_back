@@ -39,7 +39,7 @@ export const requireAuth = async (
       process.env.JWT_SECRET as string
     );
     // Add the use: r ID to the request object for use in subsequent middleware or route handlers
-    req.userId = payload.userId;
+    req.userId = payload.id;
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid or expired token" });

@@ -1,19 +1,22 @@
 import { Response, Request } from "express";
 import { v2 as cloudinary } from "cloudinary";
+import { Mongoose } from "mongoose";
+import SubmittedArticle from "../../models/SubmittedArticle";
+import User from "../../models/User";
 
 export const articleSubmission = async (
   req: any,
   res: Response
 ): Promise<void> => {
   try {
-    if (!checkArticleBody(req.body)) {
-      res.status(400).json({ error: "Missing fields" });
+    if (checkArticleBody(req.body)) {
+      throw new Error("Invalid article body");
     }
     config();
-    console.log(req.body);
-    console.log(req.file.originalname);
+    const user = await User.findById(req.userId);
+    let response: any;
     if (req.file) {
-      const response = await new Promise((resolve, reject) => {
+      response = await new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           { resource_type: "auto" },
           (error, result) => {
@@ -25,22 +28,42 @@ export const articleSubmission = async (
           }
         );
 
-        uploadStream.end(req.file.buffer);
+        return uploadStream.end(req.file.buffer);
       });
-      console.log(response);
     }
+    const secure_url: any = response.secure_url;
     //verify upload, get the secure_url from response and save to mongo
     // const newArticle: any = new Article();
+    const articleData = {
+      title: req.body.title,
+      description: req.body.description,
+      content: req.body.content,
+      category: req.body.category,
+      user,
+      author: user?.name,
+      mainImageUrl: secure_url,
+    };
 
+    const submittedArticle: any = new SubmittedArticle(articleData);
+    await submittedArticle.save();
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ error: error });
+    res.status(400).json(error);
   }
 };
 
 const checkArticleBody = (body: any) => {
-  return !body.title || !body.description || !body.content || !body.category;
+  return (
+    !body.title ||
+    !body.description ||
+    !body.content ||
+    !body.category ||
+    body.title === "" ||
+    body.description === "" ||
+    body.content === "" ||
+    body.category === ""
+  );
 };
 
 const config = () => {
