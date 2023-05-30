@@ -11,8 +11,8 @@
     "dev:run": "nodemon dist/js/app.js",
     "dev": "concurrently yarn:dev:*",
     "ts.check": "tsc --project tsconfig.json",
-    "start": "nodemon src/index.ts",
     "build": "rimraf dist && tsc",
+    "start": "nodemon src/index.ts",
     "add-build": "git add dist"
   },
   "dependencies": {
