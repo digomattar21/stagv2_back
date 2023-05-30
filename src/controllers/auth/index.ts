@@ -34,6 +34,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       email: user.email,
       name: user.name,
       avatar: user.avatar,
+      admin: user.role === "admin",
     };
 
     const token: string = await jwt.sign(payload, `${process.env.JWT_SECRET}`);
